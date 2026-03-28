@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Another1 — Cadastro de Prestadores</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#090909;
+  --off:#111;
+  --card:#161616;
+  --card2:#1c1c1c;
+  --border:rgba(255,255,255,0.07);
+  --border2:rgba(255,255,255,0.12);
+  --white:#f4f4ef;
+  --muted:rgba(244,244,239,0.42);
+  --muted2:rgba(244,244,239,0.65);
+  --accent:#ff3b1f;
+  --accent-dim:rgba(255,59,31,0.12);
+  --green:#22c55e;
+}
+html{scroll-behavior:smooth}
+body{background:var(--black);color:var(--white);font-family:'DM Sans',sans-serif;font-weight:300;overflow-x:hidden;min-height:100vh}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(9,9,9,0.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--border)}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.05em;color:var(--white);text-decoration:none}
+.logo span{color:var(--accent)}
+.nav-badge{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(255,59,31,0.3);padding:4px 12px;border-radius:20px}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:120px 40px 80px;position:relative;overflow:hidden}
+.hero-glow{position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 55% 45% at 75% 40%,rgba(255,59,31,0.08) 0%,transparent 70%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px;pointer-events:none}
+
+.hero-content{position:relative;z-index:1;max-width:780px}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:24px}
+.eyebrow-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.4s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(58px,9vw,118px);line-height:.93;letter-spacing:.02em;margin-bottom:28px}
+h1 .accent{color:var(--accent)}
+h1 .thin{opacity:.35}
+
+.hero-sub{font-size:clamp(15px,1.8vw,18px);color:var(--muted2);line-height:1.7;max-width:500px;margin-bottom:40px}
+
+/* BENEFITS ROW */
+.benefits{display:flex;gap:32px;flex-wrap:wrap;margin-bottom:48px}
+.benefit{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--muted2)}
+.benefit-icon{width:28px;height:28px;border-radius:6px;background:var(--accent-dim);border:1px solid rgba(255,59,31,0.2);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0}
+
+.btn-scroll{display:inline-flex;align-items:center;gap:10px;background:var(--accent);color:var(--white);border:none;padding:16px 32px;border-radius:4px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-scroll:hover{background:#e02d10;transform:translateY(-2px)}
+.btn-scroll svg{transition:transform .2s}
+.btn-scroll:hover svg{transform:translateY(3px)}
+
+/* STATS */
+.stats{display:flex;gap:2px;margin-top:60px}
+.stat{flex:1;background:var(--card);padding:24px;border-top:2px solid var(--accent)}
+.stat-num{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--white);line-height:1}
+.stat-label{font-size:12px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.08em}
+
+/* SECTION */
+section{padding:100px 40px}
+.section-label{font-size:11px;font-weight:500;letter-spacing:.15em;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(38px,5.5vw,64px);line-height:1;letter-spacing:.02em;margin-bottom:12px}
+.section-sub{font-size:15px;color:var(--muted2);line-height:1.7;max-width:480px}
+
+/* HOW */
+.how{background:var(--off)}
+.how-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2px;margin-top:48px}
+.how-card{background:var(--card);padding:32px 28px;position:relative;overflow:hidden}
+.how-num{font-family:'Bebas Neue',sans-serif;font-size:64px;color:var(--accent-dim);position:absolute;top:12px;right:20px;line-height:1}
+.how-card h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:.04em;margin-bottom:10px;position:relative}
+.how-card p{font-size:13px;color:var(--muted);line-height:1.7;position:relative}
+.how-highlight{color:var(--accent);font-weight:500}
+
+/* FORM SECTION */
+.form-section{background:var(--black)}
+.form-wrap{display:grid;grid-template-columns:1fr 1.4fr;gap:80px;align-items:start;margin-top:60px}
+.form-left h2{font-family:'Bebas Neue',sans-serif;font-size:clamp(36px,4vw,52px);line-height:1;margin-bottom:16px}
+.form-left p{font-size:14px;color:var(--muted2);line-height:1.7;margin-bottom:28px}
+.promise-list{list-style:none;display:flex;flex-direction:column;gap:12px}
+.promise-list li{display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--muted2);line-height:1.5}
+.check{color:var(--green);font-size:15px;margin-top:1px;flex-shrink:0}
+
+/* FORM */
+form{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:40px;display:flex;flex-direction:column;gap:0}
+.form-section-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:.06em;color:var(--accent);margin:28px 0 16px;padding-top:28px;border-top:1px solid var(--border)}
+.form-section-title:first-child{margin-top:0;padding-top:0;border-top:none}
+
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+.field label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted2)}
+.field input,.field select,.field textarea{background:var(--card2);border:1px solid var(--border2);border-radius:6px;padding:12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--white);outline:none;transition:border-color .2s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:rgba(255,59,31,0.5)}
+.field input::placeholder,.field textarea::placeholder{color:var(--muted)}
+.field select option{background:var(--card2);color:var(--white)}
+.field textarea{resize:vertical;min-height:80px}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+/* SERVICES GRID */
+.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:8px}
+.service-chip{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--border);border-radius:6px;padding:10px 12px;cursor:pointer;transition:all .2s;user-select:none}
+.service-chip:hover{border-color:rgba(255,59,31,0.3)}
+.service-chip input[type=checkbox]{display:none;pointer-events:none}
+.service-chip.selected{background:var(--accent-dim);border-color:rgba(255,59,31,0.5)}
+.service-chip span{font-size:12px;font-weight:500;color:var(--muted2);transition:color .2s}
+.service-chip.selected span{color:var(--white)}
+.chip-icon{font-size:14px}
+
+/* CONSENT */
+.consent{display:flex;align-items:flex-start;gap:10px;margin-top:8px;cursor:pointer}
+.consent input{margin-top:3px;accent-color:var(--accent);flex-shrink:0}
+.consent span{font-size:12px;color:var(--muted);line-height:1.6}
+.consent span strong{color:var(--muted2)}
+
+/* SUBMIT */
+.btn-submit{background:var(--accent);color:var(--white);border:none;padding:16px;border-radius:6px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer;transition:all .2s;margin-top:24px;width:100%}
+.btn-submit:hover{background:#e02d10}
+.btn-submit:disabled{opacity:.5;cursor:not-allowed}
+.form-note{font-size:11px;color:var(--muted);text-align:center;margin-top:12px;line-height:1.6}
+
+/* SUCCESS */
+.success-msg{display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:60px 40px;gap:16px}
+.success-msg.show{display:flex}
+.success-icon{width:64px;height:64px;border-radius:50%;background:rgba(34,197,94,0.1);border:2px solid var(--green);display:flex;align-items:center;justify-content:center;font-size:28px}
+.success-msg h3{font-family:'Bebas Neue',sans-serif;font-size:32px}
+.success-msg p{font-size:14px;color:var(--muted2);max-width:300px;line-height:1.6}
+
+/* FOOTER */
+footer{padding:28px 40px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px}
+footer p{font-size:12px;color:var(--muted)}
+
+/* ANIMATIONS */
+.fade-up{opacity:0;transform:translateY(28px);animation:fu .65s forwards}
+.fade-up:nth-child(2){animation-delay:.08s}
+.fade-up:nth-child(3){animation-delay:.16s}
+.fade-up:nth-child(4){animation-delay:.24s}
+.fade-up:nth-child(5){animation-delay:.32s}
+@keyframes fu{to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:900px){
+  .form-wrap{grid-template-columns:1fr}
+  .form-left{display:none}
+  nav{padding:16px 20px}
+  .hero{padding:100px 20px 60px}
+  section{padding:70px 20px}
+  footer{padding:20px}
+  .services-grid{grid-template-columns:repeat(2,1fr)}
+  .stats{flex-direction:column}
+}
+@media(max-width:480px){
+  .field-row{grid-template-columns:1fr}
+  .services-grid{grid-template-columns:1fr 1fr}
+  .benefits{flex-direction:column;gap:16px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="logo">ANOTHER<span>1</span></a>
+  <span class="nav-badge">Área do Prestador</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="eyebrow fade-up"><span class="eyebrow-dot"></span>Cadastro de profissionais</div>
+    <h1 class="fade-up">
+      SEM<br>
+      SERVIÇO<br>
+      <span class="accent">HOJE?</span><br>
+      <span class="thin">A GENTE</span><br>
+      RESOLVE.
+    </h1>
+    <p class="hero-sub fade-up">Cadastre-se no Another1 e receba chamados de clientes no seu bairro quando você estiver disponível. Sem mensalidade. Você paga só quando fechar serviço.</p>
+    <div class="benefits fade-up">
+      <div class="benefit"><div class="benefit-icon">⚡</div>Chamados em tempo real</div>
+      <div class="benefit"><div class="benefit-icon">💰</div>Sem mensalidade</div>
+      <div class="benefit"><div class="benefit-icon">📍</div>Só no seu bairro</div>
+      <div class="benefit"><div class="benefit-icon">🔒</div>Pagamento garantido</div>
+    </div>
+    <a href="#formulario" class="btn-scroll fade-up">
+      Quero me cadastrar
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stat-num">0%</div><div class="stat-label">Mensalidade</div></div>
+    <div class="stat"><div class="stat-num">12%</div><div class="stat-label">Só quando fechar</div></div>
+    <div class="stat"><div class="stat-num">48H</div><div class="stat-label">Pagamento garantido</div></div>
+    <div class="stat"><div class="stat-num">100%</div><div class="stat-label">No seu bairro</div></div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="how">
+  <div class="section-label">Como funciona</div>
+  <h2 class="section-title">SIMPLES ASSIM.</h2>
+  <div class="how-grid">
+    <div class="how-card">
+      <div class="how-num">01</div>
+      <h3>Cadastre-se</h3>
+      <p>Preencha seus dados uma vez só. Verificamos seu histórico e ativamos seu perfil em até 24h.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">02</div>
+      <h3>Sinalize disponibilidade</h3>
+      <p>Quando estiver livre, manda <span class="how-highlight">"tô livre"</span> pro nosso WhatsApp. O sistema te coloca no mapa.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">03</div>
+      <h3>Receba o chamado</h3>
+      <p>Cliente perto de você precisa do seu serviço. Você recebe o contato direto no WhatsApp.</p>
+    </div>
+    <div class="how-card">
+      <div class="how-num">04</div>
+      <h3>Receba o pagamento</h3>
+      <p>Serviço feito, pagamento via app. <span class="how-highlight">88% é seu</span>. Cai no Pix em até 2 dias úteis.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FORMULÁRIO -->
+<section class="form-section" id="formulario">
+  <div class="form-wrap">
+    <div class="form-left">
+      <div class="section-label">Cadastro</div>
+      <h2>SEUS DADOS.<br>SUA PROTEÇÃO.</h2>
+      <p>Coletamos suas informações para garantir segurança pra você e pros clientes. Todos os dados são tratados conforme a LGPD.</p>
+      <ul class="promise-list">
+        <li><span class="check">✓</span>Verificação de antecedentes criminais</li>
+        <li><span class="check">✓</span>Perfil verificado aumenta sua conversão</li>
+        <li><span class="check">✓</span>Dados protegidos pela LGPD</li>
+        <li><span class="check">✓</span>Sem cobrança de cadastro</li>
+        <li><span class="check">✓</span>Ativação em até 24 horas</li>
+        <li><span class="check">✓</span>Suporte direto pelo WhatsApp</li>
+      </ul>
+    </div>
+
+    <div>
+      <div style="text-align:center;padding:20px 0 8px">
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSd8pQ7w3-H9njzobw5X6b18Sa5ikL3q6kJRs9Wg3otlx65xqA/viewform" target="_blank" class="btn-submit" style="display:inline-block;text-decoration:none;padding:18px 48px;font-size:16px">Preencher cadastro agora →</a>
+  <p class="form-note" style="margin-top:12px">Formulário seguro via Google Forms · Dados protegidos pela LGPD</p>
+</div>
+
+
+      <!-- SUCCESS -->
+      
+        <h3>Cadastro recebido!</h3>
+        <p>Vamos verificar seus dados e te ativar em até 24 horas. Fique de olho no seu WhatsApp.</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">Another1 · another1.com.br</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="/" class="logo" style="font-size:18px">ANOTHER<span>1</span></a>
+  <p>© 2026 Another1. Dados protegidos pela LGPD.</p>
+  <p style="color:var(--muted)">another1.com.br</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Chips
+  document.querySelectorAll('.service-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      this.classList.toggle('selected');
+    });
+  });
+
+  // CPF mask
+  var cpf = document.getElementById('cpf');
+  if(cpf){
+    cpf.addEventListener('input',function(){
+      var v=this.value.replace(/\D/g,'');
+      v=v.replace(/(\d{3})(\d)/,'$1.$2');
+      v=v.replace(/(\d{3})(\d)/,'$1.$2');
+      v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+      this.value=v;
+    });
+  }
+});
+
+function submitForm(e){
+  var selected = document.querySelectorAll('.service-chip.selected');
+  if(selected.length === 0){
+    e.preventDefault();
+    alert('Selecione pelo menos um tipo de serviço.');
+    return;
+  }
+  var servicos = Array.from(selected).map(function(el){ return el.querySelector('span:last-child').textContent; }).join(', ');
+  document.getElementById('servicosHidden').value = servicos;
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+}
+
+function buscaCep(cep){
+  cep = cep.replace(/\D/g,'');
+  if(cep.length !== 8) return;
+  fetch('https://viacep.com.br/ws/' + cep + '/json/')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.erro) return;
+      var bairro = document.getElementById('bairro');
+      var cidade = document.getElementById('cidade');
+      var estado = document.getElementById('estado');
+      if(bairro && d.bairro) bairro.value = d.bairro;
+      if(cidade && d.localidade) cidade.value = d.localidade;
+      if(estado && d.uf){
+        for(var i=0;i<estado.options.length;i++){
+          if(estado.options[i].value === d.uf){
+            estado.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    })
+    .catch(function(){});
+}
+</script>
+</body>
+</html><div style="text-align:center;padding:40px 20px">
+  <p style="font-size:14px;color:var(--muted2);margin-bottom:28px;line-height:1.7">Preencha o formulário de cadastro completo.<br>Seus dados ficam protegidos e o cadastro é ativado em até 24h.</p>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSd8pQ7w3-H9njzobw5X6b18Sa5ikL3q6kJRs9Wg3otlx65xqA/viewform" target="_blank" class="btn-submit" style="display:inline-block;text-decoration:none;padding:18px 48px;font-size:16px;border-radius:6px">Preencher cadastro agora →</a>
+  <p class="form-note" style="margin-top:16px">Formulário seguro · Dados protegidos pela LGPD · Ativação em até 24h</p>
+</div>
+        <h3>Cadastro recebido!</h3>
+        <p>Vamos verificar seus dados e te ativar em até 24 horas. Fique de olho no seu WhatsApp.</p>
+        <p style="font-size:12px;color:var(--muted);margin-top:8px">Another1 · another1.com.br</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <a href="/" class="logo" style="font-size:18px">ANOTHER<span>1</span></a>
+  <p>© 2026 Another1. Dados protegidos pela LGPD.</p>
+  <p style="color:var(--muted)">another1.com.br</p>
+</footer>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  // Chips
+  document.querySelectorAll('.service-chip').forEach(function(chip){
+    chip.addEventListener('click', function(){
+      this.classList.toggle('selected');
+    });
+  });
+
+  // CPF mask
+  var cpf = document.getElementById('cpf');
+  if(cpf){
+    cpf.addEventListener('input',function(){
+      var v=this.value.replace(/\D/g,'');
+      v=v.replace(/(\d{3})(\d)/,'$1.$2');
+      v=v.replace(/(\d{3})(\d)/,'$1.$2');
+      v=v.replace(/(\d{3})(\d{1,2})$/,'$1-$2');
+      this.value=v;
+    });
+  }
+});
+
+function submitForm(e){
+  var selected = document.querySelectorAll('.service-chip.selected');
+  if(selected.length === 0){
+    e.preventDefault();
+    alert('Selecione pelo menos um tipo de serviço.');
+    return;
+  }
+  var servicos = Array.from(selected).map(function(el){ return el.querySelector('span:last-child').textContent; }).join(', ');
+  document.getElementById('servicosHidden').value = servicos;
+  var btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+}
+
+function buscaCep(cep){
+  cep = cep.replace(/\D/g,'');
+  if(cep.length !== 8) return;
+  fetch('https://viacep.com.br/ws/' + cep + '/json/')
+    .then(function(r){ return r.json(); })
+    .then(function(d){
+      if(d.erro) return;
+      var bairro = document.getElementById('bairro');
+      var cidade = document.getElementById('cidade');
+      var estado = document.getElementById('estado');
+      if(bairro && d.bairro) bairro.value = d.bairro;
+      if(cidade && d.localidade) cidade.value = d.localidade;
+      if(estado && d.uf){
+        for(var i=0;i<estado.options.length;i++){
+          if(estado.options[i].value === d.uf){
+            estado.selectedIndex = i;
+            break;
+          }
+        }
+      }
+    })
+    .catch(function(){});
+}
+</script>
+</body>
+</html>
